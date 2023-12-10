@@ -45,7 +45,7 @@ class Kolcsonzes:
         self.kolcsonzo = Kolcsonzo("Tuti bicikli kölcsönző")
         self.foglalasok = [
             {"nap": "2024-01-21", "bckl": "Hegyi 1"},
-            {"nap": "2024-01-01", "bckl": "Országúti 2"},
+            {"nap": "2023-12-09", "bckl": "Országúti 2"},
             {"nap": "2024-01-01", "bckl": "Országúti 3"}
         ]
 
@@ -65,7 +65,8 @@ class Kolcsonzes:
     def lemondas(self, index: int):
         lemond = self.foglalasok[index]
         today = datetime.now().date()
-        if today > datetime.strptime(lemond['nap'], "%Y-%m-%d"):
+        print(datetime.strptime(lemond['nap'], "%Y-%m-%d").date())
+        if today > datetime.strptime(lemond['nap'], "%Y-%m-%d").date():
             print("Sajnos ennek a foglalásnak a lemondása már nem lehetséges.")
             return
         self.foglalasok.remove(lemond)
@@ -94,8 +95,12 @@ if __name__ == '__main__':
             print("Kérem válasszon az alábbiak közül:")
             for i, f in enumerate(kolcsonzes.foglalasok):
                 print(f"[{i + 1}] Bicikli neve: {f["bckl"]}, foglalás napja: {f["nap"]}")
-            lemondas = input()
-            kolcsonzes.lemondas(int(lemondas))
+            try:
+                lemondas = int(input())
+            except ValueError:
+                print("Kérem egy érvényes számot adjon meg.")
+                continue
+            kolcsonzes.lemondas(lemondas - 1)
         elif i.lower() == "kölcsönzés" or i == "1":
             while True:
                 print("Kérem válassszon az alábbi biciklik közül:")
